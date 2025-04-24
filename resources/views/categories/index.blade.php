@@ -4,7 +4,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Kategori') }}
             </h2>
-            <a href="{{ route('categories.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-700 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest active:bg-gray-700 focus:border-gray-900 focus:ring ring-gray-300 disabled: transition ease-in-out duration-150"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="{{ route('categories.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest active:bg-gray-700 focus:border-gray-900 focus:ring ring-gray-300 disabled: transition ease-in-out duration-150"> <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Kategori
@@ -44,7 +44,7 @@
                                 <td class="p-3 border-b text-center align-middle">
                                     <div class="flex justify-center items-center space-x-3">
                                         <a href="{{ route('categories.edit', $category) }}"
-                                            class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-blue-700">
+                                            class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                                             Edit
                                         </a>
                                         <form method="POST" action="{{ route('categories.destroy', $category) }}" class="inline"

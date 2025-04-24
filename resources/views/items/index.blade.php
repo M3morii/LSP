@@ -47,16 +47,13 @@
                                     <td class="p-3 border-b text-center">{{ $item->stock }}</td>
                                     <td class="p-3 border-b text-center">
                                         <div class="flex justify-center space-x-2">
-                                            <a href="{{ route('items.show', $item) }}" class="inline-flex items-center px-3 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700">
-                                                Detail
-                                            </a>
                                             <a href="{{ route('items.edit', $item) }}" class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                                                 Edit
                                             </a>
                                             <form method="POST" action="{{ route('items.destroy', $item) }}" class="inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus item ini?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="inline-flex items-center px-3 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
+                                                <button type="submit" class="inline-flex items-center px-3 py-3 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
                                                     Hapus
                                                 </button>
                                             </form>
@@ -66,7 +63,7 @@
                                                 @csrf
                                                 <input type="hidden" name="item_id" value="{{ $item->id }}">
                                                 <input type="hidden" name="quantity" value="1">
-                                                <button type="submit" class="inline-flex items-center px-3 py-1 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-indigo-700">
+                                                <button type="submit" class="inline-flex items-center px-3 py-1 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                                     </svg>

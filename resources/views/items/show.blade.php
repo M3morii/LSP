@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="mt-6 flex space-x-3">
-                        <a href="{{ route('items.edit', $item) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+                        <a href="{{ route('items.edit', $item) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
                             Edit
                         </a>
                         <form action="{{ route('items.destroy', $item) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus item ini?');">

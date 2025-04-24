@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Transaction;
+use App\Models\TransactionItem;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
@@ -61,22 +64,29 @@ class CartController extends Controller
 
     public function updateCart(Request $request, CartItem $cartItem)
     {
-        $request->validate([
-            'quantity' => 'required|integer|min:1',
-        ]);
+        $action = $request->action ?? null;
+        $quantity = $cartItem->quantity;
+        
+        if ($action === 'increase') {
+            $quantity += 1;
+        } elseif ($action === 'decrease') {
+            $quantity = max(1, $quantity - 1);
+        } else {
+            $quantity = max(1, $request->quantity);
+        }
 
         $item = $cartItem->item;
         
-        if ($item->stock < $request->quantity) {
-            return redirect()->back()->with('error', 'Stok tidak mencukupi.');
+        if ($item->stock < $quantity) {
+            return redirect()->back();
         }
 
         $cartItem->update([
-            'quantity' => $request->quantity,
-            'subtotal' => $item->price * $request->quantity,
+            'quantity' => $quantity,
+            'subtotal' => $item->price * $quantity,
         ]);
 
-        return redirect()->route('cart.index')->with('success', 'Keranjang berhasil diperbarui.');
+        return redirect()->route('cart.index');
     }
 
     public function removeFromCart(CartItem $cartItem)
@@ -84,5 +94,50 @@ class CartController extends Controller
         $cartItem->delete();
 
         return redirect()->route('cart.index')->with('success', 'Item berhasil dihapus dari keranjang.');
+    }
+    
+    public function checkout(Request $request)
+    {
+        // Get the user's cart and cart items
+        $cart = Auth::user()->cart;
+        
+        if (!$cart || $cart->cartItems->count() === 0) {
+            return redirect()->route('cart.index')->with('error', 'Keranjang belanja Anda kosong');
+        }
+        
+        // Generate a unique transaction code
+        $transactionCode = 'TRX-' . strtoupper(Str::random(10));
+        
+        // Create a new transaction
+        $transaction = Transaction::create([
+            'user_id' => Auth::id(),
+            'transaction_code' => $transactionCode,
+            'total_amount' => $cart->cartItems->sum(function($item) { 
+                return $item->item->price * $item->quantity; 
+            }),
+            'status' => 'completed',
+            'payment_method' => 'cash',
+        ]);
+        
+        // Add transaction items
+        foreach ($cart->cartItems as $cartItem) {
+            TransactionItem::create([
+                'transaction_id' => $transaction->id,
+                'item_id' => $cartItem->item_id,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->item->price,
+                'subtotal' => $cartItem->item->price * $cartItem->quantity,
+            ]);
+            
+            // Update stock if needed
+            $item = $cartItem->item;
+            $item->stock -= $cartItem->quantity;
+            $item->save();
+        }
+        
+        // Clear the cart
+        $cart->cartItems()->delete();
+        
+        return redirect()->route('transactions.index')->with('success', 'Pembayaran berhasil');
     }
 }

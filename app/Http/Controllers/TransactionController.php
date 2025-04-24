@@ -96,4 +96,14 @@ class TransactionController extends Controller
         
         return view('transactions.receipt', compact('transaction'));
     }
+
+    public function show(Transaction $transaction)
+    {
+        // Check if the transaction belongs to the authenticated user
+        if ($transaction->user_id !== Auth::id()) {
+            return redirect()->route('transactions.index')->with('error', 'Anda tidak memiliki akses ke transaksi ini.');
+        }
+        
+        return view('transactions.show', compact('transaction'));
+    }
 }

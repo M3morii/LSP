@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Transactions
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
     Route::get('/checkout', [TransactionController::class, 'checkout'])->name('transactions.checkout');
     Route::post('/checkout', [TransactionController::class, 'process'])->name('transactions.process');
     Route::get('/transactions/{transaction}/receipt', [TransactionController::class, 'receipt'])->name('transactions.receipt');
@@ -41,3 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+// Add this route for cart checkout
+Route::post('/cart/checkout', [App\Http\Controllers\CartController::class, 'checkout'])->name('cart.checkout');
