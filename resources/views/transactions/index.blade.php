@@ -49,7 +49,7 @@
                                             </span>
                                         </td>
                                         <td class="p-3 border-b text-center">
-                                            <a href="{{ route('transactions.show', $transaction->id) }}" class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest hover:bg-blue-700">
+                                            <a href="{{ route('transactions.show', $transaction->id) }}" class="inline-flex items-center px-3 py-3 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-black uppercase tracking-widest text-white hover:bg-blue-700">
                                                 Detail
                                             </a>
                                         </td>

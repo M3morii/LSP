@@ -4,12 +4,20 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Detail Transaksi') }}
             </h2>
-            <a href="{{ route('transactions.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-800 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-                </svg>
-                Kembali
-            </a>
+            <div class="flex space-x-2">
+                <button onclick="printReceipt()" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-800 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Cetak Struk
+                </button>
+                <a href="{{ route('transactions.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-800 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                    </svg>
+                    Kembali
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -97,4 +105,62 @@
             </div>
         </div>
     </div>
+
+    <!-- Template Struk untuk Dicetak -->
+    <div id="receipt-template" class="hidden">
+        <div style="width: 300px; font-family: 'Courier New', monospace; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 10px;">
+                <h2 style="margin: 5px 0;">ShopTr</h2>
+                <p style="margin: 5px 0;">Struk Pembelian</p>
+                <p style="margin: 5px 0;">{{ $transaction->created_at->format('d M Y H:i') }}</p>
+                <p style="margin: 5px 0;">No: {{ $transaction->transaction_code }}</p>
+            </div>
+            <div style="border-top: 1px dashed #000; border-bottom: 1px dashed #000; padding: 10px 0; margin-bottom: 10px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Item</th>
+                            <th style="text-align: right;">Qty</th>
+                            <th style="text-align: right;">Harga</th>
+                            <th style="text-align: right;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($transaction->transactionItems as $item)
+                            <tr>
+                                <td style="text-align: left;">{{ $item->item->name }}</td>
+                                <td style="text-align: right;">{{ $item->quantity }}</td>
+                                <td style="text-align: right;">{{ number_format($item->price, 0, ',', '.') }}</td>
+                                <td style="text-align: right;">{{ number_format($item->price * $item->quantity, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="text-align: right; font-weight: bold;">Total:</td>
+                        <td style="text-align: right; font-weight: bold;">Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <p>Terima Kasih Atas Kunjungan Anda</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function printReceipt() {
+            const printContents = document.getElementById('receipt-template').innerHTML;
+            const originalContents = document.body.innerHTML;
+            
+            document.body.innerHTML = printContents;
+            
+            window.print();
+            
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 </x-app-layout>

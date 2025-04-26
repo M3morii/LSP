@@ -44,7 +44,7 @@
                                 <td class="p-3 border-b text-center align-middle">
                                     <div class="flex justify-center items-center space-x-3">
                                         <a href="{{ route('categories.edit', $category) }}"
-                                            class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+                                            class="inline-flex items-center px-3 py-3 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                                             Edit
                                         </a>
                                         <form method="POST" action="{{ route('categories.destroy', $category) }}" class="inline"
@@ -52,7 +52,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="inline-flex items-center px-3 py-1 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
+                                                class="inline-flex items-center px-3 py-3 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
                                                 Hapus
                                             </button>
                                         </form>
